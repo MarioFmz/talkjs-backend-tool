@@ -18,7 +18,8 @@ const PORT = 3000;
 // The generateToken function is now inside talkjsService.js
 // function generateToken(keyType = 'dev') { ... }
 
-// Updated route to use the new service
+// Servicio: Obtiene la lista de todas las conversaciones.
+// Devuelve un array de conversaciones con información relevante.
 app.get('/conversations', async (req, res) => {
   // This endpoint doesn't currently use keyType, defaults to 'dev' in the service
   try {
@@ -36,6 +37,8 @@ app.get('/conversations', async (req, res) => {
   }
 });
 
+// Servicio: Añade o actualiza un participante en una conversación específica.
+// Requiere el ID de la conversación y el ID del usuario. Permite definir acceso y notificaciones.
 app.put('/conversations/:conversationId/participants/:userId', async (req, res) => {
   const { conversationId, userId } = req.params;
   const { access, notify } = req.body;
@@ -56,6 +59,8 @@ app.put('/conversations/:conversationId/participants/:userId', async (req, res) 
   }
 });
 
+// Servicio: Elimina un participante de una conversación específica.
+// Requiere el ID de la conversación y el ID del usuario.
 app.delete('/conversations/:conversationId/participants/:userId', async (req, res) => {
   const { conversationId, userId } = req.params;
   const { keyType } = req.query; // Read keyType from query string
@@ -74,7 +79,8 @@ app.delete('/conversations/:conversationId/participants/:userId', async (req, re
   }
 });
 
-// Updated route to use the new service
+// Servicio: Obtiene los detalles de una conversación específica.
+// Requiere el ID de la conversación. Devuelve la información de la conversación y su último mensaje.
 app.get('/conversations/:conversationId', async (req, res) => {
   const { conversationId } = req.params;
   const { keyType } = req.query; // Read keyType from query string
@@ -110,7 +116,8 @@ app.get('/conversations/:conversationId', async (req, res) => {
   }
 });
 
-// Updated route to use the new service
+// Servicio: Obtiene todas las conversaciones en las que participa un usuario.
+// Requiere el ID del usuario. Devuelve un array de conversaciones.
 app.get('/users/:userId/conversations', async (req, res) => {
   const { userId } = req.params;
   const { keyType } = req.query; // Get keyType from query parameter
@@ -141,7 +148,8 @@ app.get('/users/:userId/conversations', async (req, res) => {
   }
 });
 
-// New endpoint to get user details by appId and userId
+// Servicio: Obtiene los detalles de un usuario específico según el appId y userId.
+// Requiere el appId y el userId. Devuelve la información del usuario.
 app.get('/v1/:appId/users/:userId', async (req, res) => {
   const { appId, userId } = req.params;
 
@@ -169,7 +177,8 @@ app.get('/v1/:appId/users/:userId', async (req, res) => {
   }
 });
 
-// NEW endpoint to get ALL users (without backend pagination)
+// Servicio: Obtiene la lista completa de usuarios (sin paginación en backend).
+// Permite filtrar por entorno usando keyType. Devuelve todos los usuarios registrados.
 app.get('/users', async (req, res) => {
     try {
         // Read keyType from query parameters, default to 'dev'
